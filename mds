@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "=============================="
+echo "   Mantenimiento EndeavourOS  "
+echo "=============================="
+
+echo ""
+echo ">> Actualizando sistema..."
+sudo pacman -Syu
+
+echo ""
+echo ">> Limpiando caché de paquetes..."
+sudo paccache -r
+
+echo ""
+echo ">> Eliminando huérfanos..."
+orphans=$(pacman -Qdtq)
+if [ -n "$orphans" ]; then
+    sudo pacman -Rns $orphans --noconfirm
+else
+    echo "No hay huérfanos, todo limpio"
+fi
+
+echo ""
+echo ">> Limpiando caché del AUR..."
+yay -Sc --noconfirm --answerdiff None --answerclean All
+
+echo ""
+echo "=============================="
+echo "   Mantenimiento completado   "
+echo "=============================="
